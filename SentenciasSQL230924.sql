@@ -286,4 +286,18 @@ GROUP BY
    --Si que los hay, en el ejercicio 22 pasa eso
    
    --Ejercicio 34
-   
+      --Ejercicio 34
+  
+ UPDATE directors as d
+SET d.director_dead_date = (
+    SELECT DATE_ADD(MAX(m.movie_launch_date), INTERVAL 1 YEAR)  
+    FROM movies as m
+    WHERE m.director_id = d.director_id
+    AND m.movie_launch_date > d.director_dead_date 
+)
+WHERE EXISTS (
+    SELECT 1
+    FROM movies as m
+    WHERE m.director_id = d.director_id
+    AND m.movie_launch_date > d.director_dead_date 
+)
